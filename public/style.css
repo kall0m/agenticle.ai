@@ -1,0 +1,35 @@
+/* Global */
+
+html,
+:root {
+    font-size: 10px !important;
+    margin-top: 0 !important;
+}
+
+body,
+html {
+    min-height: 100%;
+    overscroll-behavior-y: none;
+    width: 100%;
+}
+
+.is-loading,
+.is-loading body {
+    height: 100%;
+    overflow: hidden;
+}
+
+.is-loading section {
+    opacity: 0;
+}
+
+/* --- */
+/* Media queries */
+/* --- */
+
+@media (min-width: 1440px) {
+    html,
+    :root {
+        font-size: 0.6944444444444444vw !important;
+    }
+}

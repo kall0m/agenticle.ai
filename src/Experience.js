@@ -13,7 +13,7 @@ export default function Experience() {
     const config = useControls({
         meshPhysicalMaterial: false,
         transmissionSampler: false,
-        backside: false,
+        backside: true,
         samples: { value: 10, min: 1, max: 32, step: 1 },
         resolution: { value: 2048, min: 256, max: 2048, step: 256 },
         transmission: { value: 1, min: 0, max: 1 },
@@ -63,6 +63,9 @@ export default function Experience() {
                     <MetaBall color="#B3B1F9" position={[1, 1, 0.5]} />
                     <MetaBall color="#8F90DF" position={[-1, -1, -0.5]} />
                     <MetaBall color="#FC8759" position={[2, 2, 0.5]} />
+                    <MetaBall color="#FC8759" position={[-2, -2, -0.5]} />
+                    <MetaBall color="#B3B1F9" position={[3, 3, 0.5]} />
+                    <MetaBall color="#8F90DF" position={[-3, -3, -0.5]} />
                     <Pointer />
                 </MarchingCubes>
             </Physics>

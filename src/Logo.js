@@ -10,43 +10,57 @@ import { useControls } from "leva";
 export default function Logo(props) {
     const { nodes, materials } = useGLTF("./agenticle-logo.glb");
 
-    // const materialProps = useControls({
-    //     thickness: { value: 0.2, min: 0, max: 3, step: 0.05 },
-    //     roughness: { value: 0, min: 0, max: 1, step: 0.1 },
-    //     transmission: { value: 1, min: 0, max: 1, step: 0.1 },
-    //     ior: { value: 1.2, min: 0, max: 3, step: 0.1 },
-    //     chromaticAberration: { value: 0.02, min: 0, max: 1 },
-    //     backside: { value: true },
+    // const config = useControls({
+    //     meshPhysicalMaterial: false,
+    //     transmissionSampler: false,
+    //     backside: false,
+    //     samples: { value: 10, min: 1, max: 32, step: 1 },
+    //     resolution: { value: 2048, min: 256, max: 2048, step: 256 },
+    //     transmission: { value: 1, min: 0, max: 1 },
+    //     roughness: { value: 0.0, min: 0, max: 1, step: 0.01 },
+    //     thickness: { value: 3.5, min: 0, max: 10, step: 0.01 },
+    //     ior: { value: 1.5, min: 1, max: 5, step: 0.01 },
+    //     chromaticAberration: { value: 0.06, min: 0, max: 1 },
+    //     anisotropy: { value: 0.1, min: 0, max: 1, step: 0.01 },
+    //     distortion: { value: 0.0, min: 0, max: 1, step: 0.01 },
+    //     distortionScale: { value: 0.3, min: 0.01, max: 1, step: 0.01 },
+    //     temporalDistortion: { value: 0.5, min: 0, max: 1, step: 0.01 },
+    //     clearcoat: { value: 1, min: 0, max: 1 },
+    //     attenuationDistance: { value: 0.5, min: 0, max: 10, step: 0.01 },
+    //     attenuationColor: "#ffffff",
+    //     color: "#c9ffa1",
+    //     bg: "#839681",
     // });
 
-    const config = useControls({
+    const config = {
         meshPhysicalMaterial: false,
         transmissionSampler: false,
-        backside: true,
+        backside: false,
         samples: { value: 10, min: 1, max: 32, step: 1 },
         resolution: { value: 2048, min: 256, max: 2048, step: 256 },
         transmission: { value: 1, min: 0, max: 1 },
-        roughness: { value: 0.05, min: 0, max: 1, step: 0.01 },
+        roughness: { value: 0.0, min: 0, max: 1, step: 0.01 },
         thickness: { value: 3.5, min: 0, max: 10, step: 0.01 },
         ior: { value: 1.5, min: 1, max: 5, step: 0.01 },
-        chromaticAberration: { value: 0.8, min: 0, max: 1 },
-        anisotropy: { value: 0.8, min: 0, max: 1, step: 0.01 },
-        distortion: { value: 1.0, min: 0, max: 1, step: 0.01 },
-        distortionScale: { value: 0.2, min: 0.01, max: 1, step: 0.01 },
-        temporalDistortion: { value: 0.04, min: 0, max: 1, step: 0.01 },
+        chromaticAberration: { value: 0.06, min: 0, max: 1 },
+        anisotropy: { value: 0.1, min: 0, max: 1, step: 0.01 },
+        distortion: { value: 0.0, min: 0, max: 1, step: 0.01 },
+        distortionScale: { value: 0.3, min: 0.01, max: 1, step: 0.01 },
+        temporalDistortion: { value: 0.5, min: 0, max: 1, step: 0.01 },
         clearcoat: { value: 1, min: 0, max: 1 },
         attenuationDistance: { value: 0.5, min: 0, max: 10, step: 0.01 },
         attenuationColor: "#ffffff",
-        color: "#8F90DF",
-        bg: "#B3B1F9",
-    });
+        color: "#c9ffa1",
+        bg: "#839681",
+    };
 
     return (
         <group {...props} dispose={null}>
             <mesh
                 castShadow
                 receiveShadow
-                geometry={nodes.Curve.geometry}
+                geometry={nodes.Outer.geometry}
+                // material={nodes.Outer.material}
                 rotation={[Math.PI / 2, 0, 0]}
             >
                 <MeshTransmissionMaterial
@@ -54,10 +68,20 @@ export default function Logo(props) {
                     {...config}
                 />
             </mesh>
-            {/* <mesh position={[0, 0, -4]}>
-                <sphereGeometry />
-                <meshStandardMaterial />
-            </mesh> */}
+            <mesh
+                castShadow
+                receiveShadow
+                geometry={nodes.Default.geometry}
+                material={nodes.Default.material}
+                rotation={[Math.PI / 2, 0, 0]}
+            />
+            {/* <mesh
+                castShadow
+                receiveShadow
+                geometry={nodes.Inner.geometry}
+                material={nodes.Inner.material}
+                rotation={[Math.PI / 2, 0, 0]}
+            /> */}
         </group>
     );
 }

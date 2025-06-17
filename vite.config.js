@@ -1,6 +1,7 @@
 import react from "@vitejs/plugin-react";
 import { transformWithEsbuild } from "vite";
 import restart from "vite-plugin-restart";
+import glsl from "vite-plugin-glsl";
 
 export default {
     root: "src/",
@@ -8,6 +9,7 @@ export default {
     plugins: [
         // Restart server on static/public file change
         restart({ restart: ["../public/**"] }),
+        glsl(),
 
         // React support
         react(),

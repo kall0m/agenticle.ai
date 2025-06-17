@@ -21,11 +21,11 @@ root.render(
         }}
         camera={{ fov: 30, near: 0.1, far: 100, position: [0, 10, 0] }}
     >
-        <OrbitControls
+        {/* <OrbitControls
             target={[0, 0, 0]}
             enablePan={false}
             enableZoom={false}
-        />
+        /> */}
         <Experience />
     </Canvas>
 );

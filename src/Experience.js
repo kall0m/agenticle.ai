@@ -19,8 +19,8 @@ export default function Experience() {
         <>
             <directionalLight
                 castShadow
-                position={[1, 2, 3]}
-                intensity={1.5}
+                position={[2, 2, 3]}
+                intensity={2}
                 shadow-normalBias={0.04}
             />
             <ambientLight intensity={0.5} />
@@ -55,7 +55,10 @@ export default function Experience() {
             </Physics> */}
 
             {/* <Ocean /> */}
-            <Water mouseSize={0.12} deep={0.5} viscosity={0.96} />
+
+            <Suspense fallback={<Placeholder scale={[3, 3, 1]} />}>
+                <Water mouseSize={0.28} deep={0.004} viscosity={0.96} />
+            </Suspense>
         </>
     );
 }

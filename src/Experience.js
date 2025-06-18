@@ -13,10 +13,18 @@ import Pointer from "./Pointer.js";
 import MetaBall from "./Metaball.js";
 import Ocean from "./Ocean.js";
 import Water from "./Water.js";
+import { Perf } from "r3f-perf";
+import { useControls } from "leva";
 
 export default function Experience() {
+    const { perfVisible } = useControls({
+        perfVisible: true,
+    });
+
     return (
         <>
+            {perfVisible && <Perf position="top-left" />}
+
             <directionalLight
                 castShadow
                 position={[2, 2, 3]}

@@ -5,6 +5,7 @@ import { OrbitControls } from "@react-three/drei";
 import Experience from "./Experience.js";
 import * as THREE from "three";
 import { StrictMode } from "react";
+import { useControls, Leva } from "leva";
 
 if (window.location.hostname === "localhost") {
     window.parent.postMessage("localhost-alive", "*");
@@ -14,6 +15,7 @@ const root = ReactDOM.createRoot(document.querySelector("#root"));
 
 root.render(
     <StrictMode>
+        <Leva collapsed />
         <Canvas
             shadows
             gl={{

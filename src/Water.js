@@ -4,7 +4,7 @@ import { useThree, useFrame, extend } from "@react-three/fiber";
 import { GPUComputationRenderer } from "three/addons/misc/GPUComputationRenderer.js";
 import { SimplexNoise } from "three/addons/math/SimplexNoise.js";
 
-const WIDTH = 128;
+const DEFAULT_WIDTH = window.devicePixelRatio <= 1.5 ? 64 : 128;
 
 class WaterMaterial extends THREE.MeshStandardMaterial {
     constructor(params) {
@@ -12,8 +12,8 @@ class WaterMaterial extends THREE.MeshStandardMaterial {
         this.defines = {
             STANDARD: "",
             USE_UV: "",
-            WIDTH: WIDTH.toFixed(1),
-            BOUNDS: "1.0", // placeholder, updated below
+            WIDTH: DEFAULT_WIDTH.toFixed(1),
+            BOUNDS: "1.0",
         };
         this.extra = {};
         this.addUniform("heightmap", null);
@@ -25,8 +25,7 @@ class WaterMaterial extends THREE.MeshStandardMaterial {
             shader.vertexShader = shader.vertexShader
                 .replace(
                     "#include <common>",
-                    `#include <common>
-uniform sampler2D heightmap;`
+                    `#include <common>\nuniform sampler2D heightmap;`
                 )
                 .replace(
                     "#include <beginnormal_vertex>",
@@ -102,11 +101,14 @@ export default function Water({
     mouseSize = 0.2,
     deep = 0.01,
     viscosity = 0.93,
+    smoothing = true,
 }) {
     const ref = useRef();
     const rayMesh = useRef();
     const { gl, camera, size, viewport } = useThree();
-    const BOUNDS = viewport.width;
+    const WIDTH = DEFAULT_WIDTH;
+    const BOUNDS_X = viewport.width;
+    const BOUNDS_Y = viewport.height;
     const pointer = useRef(new THREE.Vector2());
     const raycaster = new THREE.Raycaster();
     const simplex = useMemo(() => new SimplexNoise(), []);
@@ -142,7 +144,7 @@ export default function Water({
         heightmapVariable.material.uniforms.mouseSize = { value: mouseSize };
         heightmapVariable.material.uniforms.deep = { value: deep };
         heightmapVariable.material.uniforms.viscosity = { value: viscosity };
-        heightmapVariable.material.defines.BOUNDS = BOUNDS.toFixed(1);
+        heightmapVariable.material.defines.BOUNDS = BOUNDS_X.toFixed(1); // Use X for uniform
         gpuCompute.setVariableDependencies(heightmapVariable, [
             heightmapVariable,
         ]);
@@ -164,7 +166,7 @@ export default function Water({
             smoothingVarRef.current = smoothingVariable;
             setReady(true);
         }
-    }, [gl, mouseSize, deep, viscosity, simplex, BOUNDS]);
+    }, [gl, mouseSize, deep, viscosity, simplex, BOUNDS_X, WIDTH]);
 
     useEffect(() => {
         const handleMove = (e) => {
@@ -180,13 +182,9 @@ export default function Water({
     let frameCount = 0;
 
     useFrame(() => {
-        if (
-            !ready ||
-            !computeRef.current ||
-            !heightmapVarRef.current ||
-            !smoothingVarRef.current
-        )
-            return;
+        if (!ready || !computeRef.current || !heightmapVarRef.current) return;
+
+        if (frameCount++ % 2 !== 0) return;
 
         raycaster.setFromCamera(pointer.current, camera);
         const intersects = rayMesh.current
@@ -207,7 +205,11 @@ export default function Water({
 
         computeRef.current.compute();
 
-        if (++frameCount % 2 === 0) {
+        if (
+            smoothing &&
+            computeRef.current.getCurrentRenderTarget &&
+            smoothingVarRef.current
+        ) {
             computeRef.current.renderTexture(
                 computeRef.current.getCurrentRenderTarget(
                     heightmapVarRef.current
@@ -234,8 +236,10 @@ export default function Water({
 
     return (
         <>
-            <mesh rotation-x={-Math.PI / 2} position={[0, 0, 0]}>
-                <planeGeometry args={[BOUNDS, BOUNDS, WIDTH - 1, WIDTH - 1]} />
+            <mesh rotation-x={-Math.PI / 2}>
+                <planeGeometry
+                    args={[BOUNDS_X, BOUNDS_Y, WIDTH - 1, WIDTH - 1]}
+                />
                 <waterMaterial
                     ref={ref}
                     color={0x8f90df}
@@ -246,14 +250,9 @@ export default function Water({
                     side={THREE.DoubleSide}
                 />
             </mesh>
-            <mesh
-                ref={rayMesh}
-                rotation-x={-Math.PI / 2}
-                visible={false}
-                position={[0, 0, 0]}
-            >
-                <planeGeometry args={[BOUNDS, BOUNDS]} />
-                <meshBasicMaterial color={0xffffff} />
+            <mesh ref={rayMesh} rotation-x={-Math.PI / 2} visible={false}>
+                <planeGeometry args={[BOUNDS_X, BOUNDS_Y]} />
+                <meshBasicMaterial color={0xdad9fc} />
             </mesh>
         </>
     );

@@ -4,7 +4,7 @@ import { useThree, useFrame, extend } from "@react-three/fiber";
 import { GPUComputationRenderer } from "three/addons/misc/GPUComputationRenderer.js";
 import { SimplexNoise } from "three/addons/math/SimplexNoise.js";
 
-const WIDTH = 256;
+const WIDTH = 128;
 
 class WaterMaterial extends THREE.MeshStandardMaterial {
     constructor(params) {

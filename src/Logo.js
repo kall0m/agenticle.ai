@@ -59,7 +59,7 @@ export default function Logo(props) {
             <mesh
                 castShadow
                 receiveShadow
-                geometry={nodes.Outer.geometry}
+                geometry={nodes.Outer1.geometry}
                 // material={nodes.Outer.material}
                 rotation={[0, 0, 0]}
             >
@@ -71,8 +71,8 @@ export default function Logo(props) {
             <mesh
                 castShadow
                 receiveShadow
-                geometry={nodes.Default.geometry}
-                material={nodes.Default.material}
+                geometry={nodes.Inner1.geometry}
+                material={nodes.Inner1.material}
                 rotation={[0, 0, 0]}
             />
             {/* <mesh

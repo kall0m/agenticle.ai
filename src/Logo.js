@@ -10,7 +10,7 @@ import { useControls } from "leva";
 export default function Logo(props) {
     const { nodes, materials } = useGLTF("./agenticle-logo.glb");
 
-    const config = useControls({
+    const config = useControls("Logo Material", {
         meshPhysicalMaterial: false,
         transmissionSampler: false,
         backside: true,

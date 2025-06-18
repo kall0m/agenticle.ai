@@ -17,53 +17,52 @@ import { Perf } from "r3f-perf";
 import { useControls } from "leva";
 
 export default function Experience() {
-    const { perfVisible } = useControls({
-        perfVisible: true,
+    const {
+        perfVisible,
+        mouseSize,
+        deep,
+        viscosity,
+        smoothing,
+        showLogo,
+        showWater,
+    } = useControls({
+        perfVisible: { value: true },
+        mouseSize: { value: 0.8, min: 0.01, max: 2, step: 0.01 },
+        deep: { value: 0.004, min: 0, max: 0.02, step: 0.001 },
+        viscosity: { value: 0.96, min: 0.8, max: 1, step: 0.005 },
+        smoothing: { value: false },
+        showLogo: { value: false },
+        showWater: { value: true },
     });
 
     return (
         <>
             {perfVisible && <Perf position="top-left" />}
 
+            <ambientLight intensity={0.5} />
             <directionalLight
                 castShadow
                 position={[2, 2, 3]}
                 intensity={4}
                 shadow-normalBias={0.04}
             />
-            <ambientLight intensity={0.5} />
 
             <Suspense fallback={<Placeholder scale={[3, 3, 1]} />}>
-                <Logo position={[2, 0, 0]} rotation={[0, 0, 0]} scale={1.5} />
-            </Suspense>
-
-            {/* <Physics gravity={[0, 2, 0]}>
-                <MarchingCubes
-                    resolution={50}
-                    maxPolyCount={20000}
-                    enableUvs={false}
-                    enableColors={true}
-                    position={[2, 0, 0]}
-                >
-                    <meshStandardMaterial
-                        vertexColors
-                        thickness={0.15}
-                        roughness={0}
+                {showWater && (
+                    <Water
+                        mouseSize={mouseSize}
+                        deep={deep}
+                        viscosity={viscosity}
+                        smoothing={smoothing}
                     />
-                    <MetaBall color="#B3B1F9" position={[1, 1, 0.5]} />
-                    <MetaBall color="#8F90DF" position={[-1, -1, -0.5]} />
-                    <MetaBall color="#FC8759" position={[2, 2, 0.5]} />
-                    <MetaBall color="#FC8759" position={[-2, -2, -0.5]} />
-                    <MetaBall color="#B3B1F9" position={[3, 3, 0.5]} />
-                    <MetaBall color="#8F90DF" position={[-3, -3, -0.5]} />
-                    <Pointer />
-
-                    <MarchingPlane planeType="y" strength={0.5} subtract={12} />
-                </MarchingCubes>
-            </Physics> */}
-
-            <Suspense fallback={<Placeholder scale={[3, 3, 1]} />}>
-                <Water mouseSize={0.8} deep={0.004} viscosity={0.96} />
+                )}
+                {showLogo && (
+                    <Logo
+                        position={[2, 0, 0]}
+                        rotation={[0, 0, 0]}
+                        scale={1.5}
+                    />
+                )}
             </Suspense>
         </>
     );

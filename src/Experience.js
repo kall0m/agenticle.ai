@@ -20,14 +20,14 @@ export default function Experience() {
             <directionalLight
                 castShadow
                 position={[2, 2, 3]}
-                intensity={2}
+                intensity={4}
                 shadow-normalBias={0.04}
             />
             <ambientLight intensity={0.5} />
 
-            {/* <Suspense fallback={<Placeholder scale={[3, 3, 1]} />}>
-                <Logo position={[2, 0, 0]} rotation={[0, -0.3, 0]} />
-            </Suspense> */}
+            <Suspense fallback={<Placeholder scale={[3, 3, 1]} />}>
+                <Logo position={[2, 0, 0]} rotation={[0, 0, 0]} scale={1.5} />
+            </Suspense>
 
             {/* <Physics gravity={[0, 2, 0]}>
                 <MarchingCubes
@@ -54,10 +54,8 @@ export default function Experience() {
                 </MarchingCubes>
             </Physics> */}
 
-            {/* <Ocean /> */}
-
             <Suspense fallback={<Placeholder scale={[3, 3, 1]} />}>
-                <Water mouseSize={0.28} deep={0.004} viscosity={0.96} />
+                <Water mouseSize={0.8} deep={0.004} viscosity={0.96} />
             </Suspense>
         </>
     );

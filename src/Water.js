@@ -4,7 +4,7 @@ import { useThree, useFrame, extend } from "@react-three/fiber";
 import { GPUComputationRenderer } from "three/addons/misc/GPUComputationRenderer.js";
 import { SimplexNoise } from "three/addons/math/SimplexNoise.js";
 
-const WIDTH = 1024;
+const WIDTH = 256;
 
 class WaterMaterial extends THREE.MeshStandardMaterial {
     constructor(params) {
@@ -234,7 +234,7 @@ export default function Water({
 
     return (
         <>
-            <mesh rotation-x={-Math.PI / 2}>
+            <mesh rotation-x={-Math.PI / 2} position={[0, 0, 0]}>
                 <planeGeometry args={[BOUNDS, BOUNDS, WIDTH - 1, WIDTH - 1]} />
                 <waterMaterial
                     ref={ref}
@@ -246,9 +246,14 @@ export default function Water({
                     side={THREE.DoubleSide}
                 />
             </mesh>
-            <mesh ref={rayMesh} rotation-x={-Math.PI / 2} visible={false}>
+            <mesh
+                ref={rayMesh}
+                rotation-x={-Math.PI / 2}
+                visible={false}
+                position={[0, 0, 0]}
+            >
                 <planeGeometry args={[BOUNDS, BOUNDS]} />
-                <meshBasicMaterial color={0xdad9fc} />
+                <meshBasicMaterial color={0xffffff} />
             </mesh>
         </>
     );

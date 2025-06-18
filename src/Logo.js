@@ -10,10 +10,32 @@ import { useControls } from "leva";
 export default function Logo(props) {
     const { nodes, materials } = useGLTF("./agenticle-logo.glb");
 
-    // const config = useControls({
+    const config = useControls({
+        meshPhysicalMaterial: false,
+        transmissionSampler: false,
+        backside: true,
+        samples: { value: 10, min: 1, max: 32, step: 1 },
+        resolution: { value: 2048, min: 256, max: 2048, step: 256 },
+        transmission: { value: 1, min: 0, max: 1 },
+        roughness: { value: 0.0, min: 0, max: 1, step: 0.01 },
+        thickness: { value: 3.5, min: 0, max: 10, step: 0.01 },
+        ior: { value: 1.5, min: 1, max: 5, step: 0.01 },
+        chromaticAberration: { value: 1, min: 0, max: 1 },
+        anisotropy: { value: 1, min: 0, max: 1, step: 0.01 },
+        distortion: { value: 0.05, min: 0, max: 1, step: 0.01 },
+        distortionScale: { value: 0.3, min: 0.01, max: 1, step: 0.01 },
+        temporalDistortion: { value: 0.5, min: 0, max: 1, step: 0.01 },
+        clearcoat: { value: 1, min: 0, max: 1 },
+        attenuationDistance: { value: 0.5, min: 0, max: 10, step: 0.01 },
+        attenuationColor: "#ffffff",
+        color: "#8F90DF",
+        bg: "#B3B1F9",
+    });
+
+    // const config = {
     //     meshPhysicalMaterial: false,
     //     transmissionSampler: false,
-    //     backside: false,
+    //     backside: true,
     //     samples: { value: 10, min: 1, max: 32, step: 1 },
     //     resolution: { value: 2048, min: 256, max: 2048, step: 256 },
     //     transmission: { value: 1, min: 0, max: 1 },
@@ -28,31 +50,9 @@ export default function Logo(props) {
     //     clearcoat: { value: 1, min: 0, max: 1 },
     //     attenuationDistance: { value: 0.5, min: 0, max: 10, step: 0.01 },
     //     attenuationColor: "#ffffff",
-    //     color: "#c9ffa1",
-    //     bg: "#839681",
-    // });
-
-    const config = {
-        meshPhysicalMaterial: false,
-        transmissionSampler: false,
-        backside: false,
-        samples: { value: 10, min: 1, max: 32, step: 1 },
-        resolution: { value: 2048, min: 256, max: 2048, step: 256 },
-        transmission: { value: 1, min: 0, max: 1 },
-        roughness: { value: 0.0, min: 0, max: 1, step: 0.01 },
-        thickness: { value: 3.5, min: 0, max: 10, step: 0.01 },
-        ior: { value: 1.5, min: 1, max: 5, step: 0.01 },
-        chromaticAberration: { value: 0.06, min: 0, max: 1 },
-        anisotropy: { value: 0.1, min: 0, max: 1, step: 0.01 },
-        distortion: { value: 0.0, min: 0, max: 1, step: 0.01 },
-        distortionScale: { value: 0.3, min: 0.01, max: 1, step: 0.01 },
-        temporalDistortion: { value: 0.5, min: 0, max: 1, step: 0.01 },
-        clearcoat: { value: 1, min: 0, max: 1 },
-        attenuationDistance: { value: 0.5, min: 0, max: 10, step: 0.01 },
-        attenuationColor: "#ffffff",
-        color: "#c9ffa1",
-        bg: "#839681",
-    };
+    //     color: "#8F90DF",
+    //     bg: "#B3B1F9",
+    // }
 
     return (
         <group {...props} dispose={null}>
@@ -61,7 +61,7 @@ export default function Logo(props) {
                 receiveShadow
                 geometry={nodes.Outer.geometry}
                 // material={nodes.Outer.material}
-                rotation={[Math.PI / 2, 0, 0]}
+                rotation={[0, 0, 0]}
             >
                 <MeshTransmissionMaterial
                     background={new THREE.Color(config.bg)}
@@ -73,14 +73,14 @@ export default function Logo(props) {
                 receiveShadow
                 geometry={nodes.Default.geometry}
                 material={nodes.Default.material}
-                rotation={[Math.PI / 2, 0, 0]}
+                rotation={[0, 0, 0]}
             />
             {/* <mesh
                 castShadow
                 receiveShadow
                 geometry={nodes.Inner.geometry}
                 material={nodes.Inner.material}
-                rotation={[Math.PI / 2, 0, 0]}
+                rotation={[0, 0, 0]}
             /> */}
         </group>
     );

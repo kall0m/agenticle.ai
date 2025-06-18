@@ -5,7 +5,9 @@ import { GPUComputationRenderer } from "three/addons/misc/GPUComputationRenderer
 import { SimplexNoise } from "three/addons/math/SimplexNoise.js";
 import { useControls } from "leva";
 
-const DEFAULT_WIDTH = window.devicePixelRatio <= 1.5 ? 64 : 128;
+const isLowEnd =
+    window.devicePixelRatio <= 1.5 || navigator.hardwareConcurrency <= 4;
+const DEFAULT_WIDTH = isLowEnd ? 64 : 128;
 
 class WaterMaterial extends THREE.MeshStandardMaterial {
     constructor(params) {
@@ -31,19 +33,19 @@ class WaterMaterial extends THREE.MeshStandardMaterial {
                 .replace(
                     "#include <beginnormal_vertex>",
                     `
-          vec2 cellSize = vec2( 1.0 / WIDTH, 1.0 / WIDTH );
-          vec3 objectNormal = vec3(
-            ( texture2D( heightmap, uv + vec2( -cellSize.x, 0 ) ).x - texture2D( heightmap, uv + vec2( cellSize.x, 0 ) ).x ) * WIDTH / BOUNDS,
-            ( texture2D( heightmap, uv + vec2( 0, -cellSize.y ) ).x - texture2D( heightmap, uv + vec2( 0, cellSize.y ) ).x ) * WIDTH / BOUNDS,
-            1.0 );
-        `
+                  vec2 cellSize = vec2( 1.0 / WIDTH, 1.0 / WIDTH );
+                  vec3 objectNormal = vec3(
+                    ( texture2D( heightmap, uv + vec2( -cellSize.x, 0 ) ).x - texture2D( heightmap, uv + vec2( cellSize.x, 0 ) ).x ) * WIDTH / BOUNDS,
+                    ( texture2D( heightmap, uv + vec2( 0, -cellSize.y ) ).x - texture2D( heightmap, uv + vec2( 0, cellSize.y ) ).x ) * WIDTH / BOUNDS,
+                    1.0 );
+                `
                 )
                 .replace(
                     "#include <begin_vertex>",
                     `
-          float heightValue = texture2D(heightmap, uv).x;
-          vec3 transformed = vec3(position.x, position.y, heightValue);
-        `
+                  float heightValue = texture2D(heightmap, uv).x;
+                  vec3 transformed = vec3(position.x, position.y, heightValue);
+                `
                 );
         };
     }
@@ -111,7 +113,6 @@ export default function Water() {
         deep,
         viscosity,
         smoothing,
-        showRayMesh,
         frameSkip,
         useSimplexNoise,
         baseHeight,
@@ -121,8 +122,7 @@ export default function Water() {
         deep: { value: 0.004, min: 0, max: 0.02, step: 0.001 },
         viscosity: { value: 0.96, min: 0.8, max: 1, step: 0.005 },
         smoothing: { value: false },
-        showRayMesh: { value: false },
-        frameSkip: { value: 2, min: 1, max: 10, step: 1 },
+        frameSkip: { value: isLowEnd ? 3 : 1, min: 1, max: 10, step: 1 },
         useSimplexNoise: { value: true },
         baseHeight: { value: 0.05, min: 0, max: 0.2, step: 0.005 },
         renderResolution: {
@@ -287,7 +287,7 @@ export default function Water() {
                     side={THREE.DoubleSide}
                 />
             </mesh>
-            <mesh ref={rayMesh} rotation-x={-Math.PI / 2} visible={showRayMesh}>
+            <mesh ref={rayMesh} rotation-x={-Math.PI / 2} visible={false}>
                 <planeGeometry args={[BOUNDS, BOUNDS]} />
                 <meshBasicMaterial color={0xdad9fc} />
             </mesh>

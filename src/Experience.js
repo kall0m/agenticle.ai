@@ -32,7 +32,7 @@ export default function Experience() {
         viscosity: { value: 0.96, min: 0.8, max: 1, step: 0.005 },
         smoothing: { value: false },
         showLogo: { value: true },
-        showWater: { value: true },
+        showWater: { value: false },
     });
 
     return (
@@ -58,7 +58,7 @@ export default function Experience() {
                 )}
                 {showLogo && (
                     <Logo
-                        position={[2, 0, 0]}
+                        position={[0, 0, 0]}
                         rotation={[0, 0, 0]}
                         scale={1.5}
                     />

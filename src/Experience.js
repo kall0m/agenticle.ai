@@ -31,7 +31,7 @@ export default function Experience() {
         deep: { value: 0.004, min: 0, max: 0.02, step: 0.001 },
         viscosity: { value: 0.96, min: 0.8, max: 1, step: 0.005 },
         smoothing: { value: false },
-        showLogo: { value: false },
+        showLogo: { value: true },
         showWater: { value: true },
     });
 

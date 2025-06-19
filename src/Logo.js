@@ -155,6 +155,12 @@ export default function Logo(props) {
                 geometry={nodes.blob_inner.geometry}
                 material={nodes.blob_inner.material}
             />
+            <mesh
+                castShadow
+                receiveShadow
+                geometry={nodes.bubbles.geometry}
+                material={nodes.bubbles.material}
+            />
         </group>
     );
 }

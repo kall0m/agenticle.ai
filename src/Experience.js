@@ -42,8 +42,8 @@ export default function Experience() {
             <ambientLight intensity={0.5} />
             <directionalLight
                 castShadow
-                position={[2, 2, 3]}
-                intensity={4}
+                position={[0, 5, 0]}
+                intensity={10}
                 shadow-normalBias={0.04}
             />
 
